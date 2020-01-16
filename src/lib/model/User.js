@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const bcryptService = require('../bcrypt');
+const bcryptService = require('../brcypt');
 
 const sequelize = require('../db');
 
@@ -13,8 +13,10 @@ const tableName = 'users';
 
 const User = sequelize.define('User', {
     id: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     },
     username: {
         type: Sequelize.STRING,
@@ -24,13 +26,10 @@ const User = sequelize.define('User', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    registered: {
-        type: Sequelize.DATE,
-        allowNull: false
-    },
     last_login: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.NOW,
     }
 }, { hooks, tableName });
 

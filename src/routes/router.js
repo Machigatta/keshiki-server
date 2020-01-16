@@ -6,18 +6,24 @@ const jwt = require('jsonwebtoken');
 
 const db = require('../lib/db.js');
 const userMiddleware = require('../middleware/users.js');
+const bcryptService = require('../lib/brcypt');
 
 const Meta = require("../lib/model/Meta");
+const User = require("../lib/model/User");
 var pjson = require('../../package.json');
 
-/**
- * @swagger
- * /sign-up:
- */
-
-router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
-  
+router.post('/user', userMiddleware.isLoggedIn, (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.userData.id
+    }
+  }).then(meta => {
+    return res.status(201).send({
+      meta
+    });
+  })
 });
+
 
 router.post('/ping', (req, res, next) => {
     Meta.findOne().then(meta => {
@@ -52,20 +58,28 @@ router.post('/initial', (req, res, next) => {
  * /login:
  */
 
-router.post('/login', (req, res, next) => {
-
+router.post('/login', (req, res, next) => {  
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then(uObj => {      
+    if (uObj != null) {
+      if(bcryptService().comparePassword(req.body.password, uObj.password)){
+        return res.status(201).send({
+          token: jwt.sign({id: uObj.id, username: uObj.username}, process.env.SECRETKEY)
+        });  
+      }else{
+        return res.status(400).send({
+          error: 'Bad Credentials'
+        });  
+      }
+    }else{
+      return res.status(400).send({
+        error: 'User not found'
+      });
+    }
+  })
 });
-
-
-  /**
- * @swagger
- * /secret:
- */
-
-router.get('/secret', userMiddleware.isLoggedIn, (req, res, next) => {
-    console.log(req.userData);
-    res.send('Secret');
-});
-
 
 module.exports = router;

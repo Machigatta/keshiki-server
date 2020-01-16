@@ -14,7 +14,4 @@ let  database = new Sequelize({
     },
   },
 )
-
-//database.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_DATABASE}`);
-
 module.exports = database

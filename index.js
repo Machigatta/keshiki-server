@@ -5,7 +5,19 @@ const cors = require('cors');
 const path = require('path');
 const swaggerJSDoc = require('swagger-jsdoc');
 const db = require("./src/lib/db.js");
+const User = require("./src/lib/model/User");
 db.sync()
+User.sync().then(function() {
+    User.findOrCreate({
+      where: {
+        username: 'admin'
+      },
+      defaults: {
+        username: 'admin',
+        password: 'keshiki'
+      }
+    })
+  })
 
 const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
