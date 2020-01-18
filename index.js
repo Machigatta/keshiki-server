@@ -5,7 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const swaggerJSDoc = require('swagger-jsdoc');
 const db = require("./src/lib/db.js");
+
 const User = require("./src/lib/model/User");
+const Meta = require("./src/lib/model/Meta");
+const Screen = require("./src/lib/model/Screen");
+const Editor = require("./src/lib/model/Editor");
+
 db.sync()
 User.sync().then(function() {
     User.findOrCreate({

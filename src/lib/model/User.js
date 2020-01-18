@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const bcryptService = require('../brcypt');
 
 const sequelize = require('../db');
+const Screen = require('./Screen');
+const Editor = require('./Editor');
 
 const hooks = {
   beforeCreate(user) {
@@ -32,6 +34,9 @@ const User = sequelize.define('User', {
         defaultValue: Sequelize.NOW,
     }
 }, { hooks, tableName });
+
+User.belongsToMany(Screen, {through: Editor});
+Screen.belongsToMany(User, {through: Editor});
 
 // eslint-disable-next-line
 User.prototype.toJSON = function () {
