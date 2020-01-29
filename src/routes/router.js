@@ -17,6 +17,7 @@ const Editor = require("../lib/model/Editor");
 var pjson = require('../../package.json');
 
 router.use(cors());
+router.options('*', cors())
 
 router.get('/user', userMiddleware.isLoggedIn, (req, res, next) => {
   User.findOne({

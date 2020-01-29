@@ -27,6 +27,7 @@ User.sync().then(function() {
 const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
+app.options('*', cors())
 
 const router = require('./src/routes/router.js');
 app.use((req, res, next) => {
