@@ -20,6 +20,11 @@ const Screen = sequelize.define('Screen', {
         allowNull: false,
         defaultValue: false
     },
+    layout: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1
+    },
     protection: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -57,6 +57,71 @@ router.get('/screen',userMiddleware.isLoggedIn, function(req, res, next) {
   })
 });
 
+router.get('/screen/:id', userMiddleware.isLoggedIn, function(req, res, next) {
+  Screen.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      { 
+        model: User,
+        through: {
+          model: Editor,
+          attributes: ['role'],
+        },
+        required: true
+      }
+    ]
+  }).then(screen => {
+    return res.status(201).send({
+      screen
+    });
+  }).catch(err => {
+    return res.status(404).send({
+      error: err
+    })
+  })
+});
+
+router.post('/screen/:id',userMiddleware.isLoggedIn, function(req, res, next) {
+  Screen.update(
+      req.body.payload,
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    ).then((success) => {  
+      Screen.findOne({
+        where: {
+          id: req.params.id
+        },
+        include: [
+          { 
+            model: User,
+            through: {
+              model: Editor,
+              attributes: ['role'],
+            },
+            required: true
+          }
+        ]
+      }).then(screen => {
+        return res.status(201).send({
+          screen
+        });
+      }).catch(err => {
+        return res.status(404).send({
+          error: err
+        })
+      })
+  }).catch((err) => {
+    return res.status(400).send({
+      error: err
+    })
+  })  
+});
+
 
 router.put('/screen',userMiddleware.isLoggedIn, function(req, res, next) {
   User.findOne({where: {id: req.userData.id}}).then((user) => {
@@ -109,6 +174,24 @@ router.get('/screen/:id',userMiddleware.isLoggedIn, function(req, res, next) {
     })
   })
 });
+
+
+router.delete('/screen/:id',userMiddleware.isLoggedIn, function(req, res, next) {
+  Screen.destroy({
+      where: {
+        id: req.params.id
+      },
+    }).then(screen => {
+    return res.status(201).send({
+      screen
+    });
+  }).catch(err => {
+    return res.status(404).send({
+      error: err
+    })
+  })
+});
+
 
 
 

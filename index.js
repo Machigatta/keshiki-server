@@ -11,7 +11,7 @@ const Meta = require("./src/lib/model/Meta");
 const Screen = require("./src/lib/model/Screen");
 const Editor = require("./src/lib/model/Editor");
 
-db.sync()
+db.sync({alter: true})
 User.sync().then(function() {
     User.findOrCreate({
       where: {

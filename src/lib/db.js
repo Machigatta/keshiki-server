@@ -1,7 +1,11 @@
 const Sequelize = require('sequelize');
 require('dotenv').config()
 
-let  database = new Sequelize({
+let connectionObj = {};
+if (process.env.DB_DIALECT == 'postgres') {
+  connectionObj = process.env.DB_STRING;
+}else{
+  connectionObj = {
     database: process.env.DB_DATABASE,
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -12,6 +16,7 @@ let  database = new Sequelize({
       min: 0,
       idle: 10000,
     },
-  },
-)
+  }
+}
+let  database = new Sequelize(connectionObj)
 module.exports = database
