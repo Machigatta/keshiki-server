@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
 const db = require('../lib/db.js');
 const userMiddleware = require('../middleware/users.js');
@@ -14,6 +15,8 @@ const Screen = require("../lib/model/Screen");
 const Editor = require("../lib/model/Editor");
 
 var pjson = require('../../package.json');
+
+router.use(cors());
 
 router.get('/user', userMiddleware.isLoggedIn, (req, res, next) => {
   User.findOne({
