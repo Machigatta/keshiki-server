@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: "3"
+services:
+  app:
+    container_name: app
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASS}@postgres:5432/${DB_DATABASE}
+      NODE_ENV: ${N_ENV}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: npm run ${N_CMD}
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  postgres:
+    container_name: postgres
+    image: postgres:10.4
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_DATABASE}

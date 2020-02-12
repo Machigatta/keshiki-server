@@ -55,7 +55,7 @@ app.use('/api', router);
 //#region DOCUMENTARY
 const swaggerDefinition = {
     info: {
-        title: 'keshiki-server',
+        title: 'API for keshiki',
         version: '1.0.0',
         description: 'API for Keshiki',
     },

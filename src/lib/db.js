@@ -3,7 +3,7 @@ require('dotenv').config()
 
 let connectionObj = {};
 if (process.env.DB_DIALECT == 'postgres') {
-  connectionObj = process.env.DB_STRING;
+  connectionObj = process.env.DATABASE_URL;
 }else{
   connectionObj = {
     database: process.env.DB_DATABASE,
